@@ -22,9 +22,12 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	
 	UPROPERTY(EditAnywhere, Category = "Platform Settings")
-	float PlatformMovingSpeed = 5;
+	float PlatformMovingSpeed = 100;
 	
 	UPROPERTY(EditAnywhere, Category = "Platform Settings", Meta = (MakeEditWidget = true))
 	FVector TargetLocation;
+private:
+	FVector GlobalTargetLocation;
+	FVector GlobalStartLocation;
 
 };
