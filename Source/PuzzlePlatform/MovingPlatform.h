@@ -23,5 +23,8 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Platform Settings")
 	float PlatformMovingSpeed = 5;
+	
+	UPROPERTY(EditAnywhere, Category = "Platform Settings", Meta = (MakeEditWidget = true))
+	FVector TargetLocation;
 
 };
