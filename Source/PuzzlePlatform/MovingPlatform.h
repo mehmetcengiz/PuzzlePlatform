@@ -18,8 +18,15 @@ public:
 	AMovingPlatform();
 
 	virtual void BeginPlay() override;
+
 protected:
 	virtual void Tick(float DeltaTime) override;
+
+public:
+	void AddActiveTrigger();
+	void RemoveActiveTrigger();
+
+protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Platform Settings")
 	float PlatformMovingSpeed = 100;
@@ -29,5 +36,8 @@ protected:
 private:
 	FVector GlobalTargetLocation;
 	FVector GlobalStartLocation;
+
+	UPROPERTY(EditAnywhere)
+	int32 ActiveTriggers = 1;
 
 };

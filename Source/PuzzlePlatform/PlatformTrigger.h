@@ -27,6 +27,10 @@ private:
 	UPROPERTY(VisibleDefaultsOnly)
 	class UBoxComponent* TriggerVolume = nullptr;
 
+	UPROPERTY(EditAnywhere)
+	TArray<class AMovingPlatform*> PlatformsToTrigger;
+
+
 	UFUNCTION()
 	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	                    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
@@ -35,6 +39,6 @@ private:
 	UFUNCTION()
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	};
 
-
-};
+	
