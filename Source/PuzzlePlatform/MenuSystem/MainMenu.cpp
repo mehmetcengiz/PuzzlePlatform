@@ -3,6 +3,8 @@
 #include "MainMenu.h"
 #include "Components/Button.h"
 
+
+
 bool UMainMenu::Initialize() {
 	bool Success = Super::Initialize();
 	if (!Success) return false;
@@ -17,8 +19,15 @@ bool UMainMenu::Initialize() {
 
 }
 
+void UMainMenu::SetMenuInterface(IMenuInterface* MenuInterface) {
+	this->MenuInterface = MenuInterface;
+}
+
 void UMainMenu::HostServer() {
 	UE_LOG(LogTemp, Warning, TEXT("I will HOST a Server!!"));
+	if(MenuInterface != NULL) {
+		MenuInterface->Host();
+	}
 }
 
 void UMainMenu::JoinServer() {
