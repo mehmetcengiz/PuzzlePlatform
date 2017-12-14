@@ -22,6 +22,37 @@ bool UMainMenu::Initialize() {
 void UMainMenu::SetMenuInterface(IMenuInterface* MenuInterface) {
 	this->MenuInterface = MenuInterface;
 }
+void UMainMenu::Setup() {
+	this->AddToViewport();
+	UWorld* World = GetWorld();
+	if (!ensure(World != NULL)) return;
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+
+	if (!ensure(PlayerController != NULL)) return;
+
+	FInputModeUIOnly InputModeData;
+	InputModeData.SetWidgetToFocus(this->TakeWidget());
+	InputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+
+	PlayerController->SetInputMode(InputModeData);
+
+	PlayerController->bShowMouseCursor = true;
+}
+
+void UMainMenu::OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) {
+	this->RemoveFromViewport();
+
+	if (!ensure(InWorld != NULL)) return;
+
+	APlayerController* PlayerController = InWorld->GetFirstPlayerController();
+	if (!ensure(PlayerController != NULL)) return;
+
+	FInputModeGameOnly InputModeData;
+	PlayerController->SetInputMode(InputModeData);
+
+	PlayerController->bShowMouseCursor = false;
+
+}
 
 void UMainMenu::HostServer() {
 	UE_LOG(LogTemp, Warning, TEXT("I will HOST a Server!!"));
