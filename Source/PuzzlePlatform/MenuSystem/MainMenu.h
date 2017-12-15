@@ -27,15 +27,37 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* BtnHost;
 	
+	UPROPERTY(meta = (BindWidget))
+	class UButton* BtnJoin;	
+	
+	UPROPERTY(meta = (BindWidget))
+	class UButton* BtnJoinMenu;	
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* BtnJoin;
+	class UButton* BtnCancelJoinMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* MenuSwitcher;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UWidget* JoinMenu;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UWidget* MainMenu;
+
+
 
 	UFUNCTION()
 	void HostServer();
 
 	UFUNCTION()
 	void JoinServer();
+
+	UFUNCTION()
+	void OpenJoinMenu();
+
+	UFUNCTION()
+	void OpenMainMenu();
 
 	IMenuInterface* MenuInterface;
 

@@ -2,6 +2,7 @@
 
 #include "MainMenu.h"
 #include "Components/Button.h"
+#include "Components/WidgetSwitcher.h"
 
 
 
@@ -11,9 +12,13 @@ bool UMainMenu::Initialize() {
 
 	if (!ensure(BtnHost != NULL)) return false;
 	if (!ensure(BtnJoin != NULL)) return false;
+	if (!ensure(BtnJoinMenu != NULL)) return false;
+	if (!ensure(BtnCancelJoinMenu != NULL)) return false;
 
 	BtnHost->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
 	BtnJoin->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);
+	BtnJoinMenu->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
+	BtnCancelJoinMenu->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
 
 	return true;
 
@@ -63,4 +68,16 @@ void UMainMenu::HostServer() {
 
 void UMainMenu::JoinServer() {
 	UE_LOG(LogTemp, Warning, TEXT("I will Join to Server"));
+}
+
+void UMainMenu::OpenJoinMenu() {
+	if (!ensure(MenuSwitcher != NULL)) return;
+	if (!ensure(JoinMenu != NULL)) return;
+	MenuSwitcher->SetActiveWidget(JoinMenu);
+}
+
+void UMainMenu::OpenMainMenu() {
+	if (!ensure(MenuSwitcher != NULL)) return;
+	if (!ensure(MainMenu != NULL)) return;
+	MenuSwitcher->SetActiveWidget(MainMenu);
 }
