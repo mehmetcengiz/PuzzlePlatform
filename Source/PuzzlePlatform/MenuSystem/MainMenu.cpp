@@ -71,6 +71,7 @@ void UMainMenu::HostServer() {
 void UMainMenu::JoinServer() {
 	UE_LOG(LogTemp, Warning, TEXT("I will Join to Server"));
 	if(MenuInterface != NULL) {
+		if (!ensure(IpAddressField != NULL)) return;
 		FString Address = IpAddressField->GetText().ToString();
 		MenuInterface->Join(Address);
 	}
