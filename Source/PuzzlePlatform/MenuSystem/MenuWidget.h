@@ -18,6 +18,7 @@ class PUZZLEPLATFORM_API UMenuWidget : public UUserWidget
 public:
 
 	void Setup();
+	void Teardown();
 	virtual void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
 
 	void SetMenuInterface(IMenuInterface* MenuInterface);

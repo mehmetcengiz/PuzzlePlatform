@@ -20,19 +20,24 @@ void UMenuWidget::Setup() {
 }
 
 void UMenuWidget::OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) {
+	Teardown();
+}
+
+void UMenuWidget::SetMenuInterface(IMenuInterface* MenuInterface) {
+	this->MenuInterface = MenuInterface;
+}
+void UMenuWidget::Teardown()
+{
 	this->RemoveFromViewport();
 
-	if (!ensure(InWorld != NULL)) return;
+	UWorld* World = GetWorld();
+	if (!ensure(World != nullptr)) return;
 
-	APlayerController* PlayerController = InWorld->GetFirstPlayerController();
-	if (!ensure(PlayerController != NULL)) return;
+	APlayerController* PlayerController = World->GetFirstPlayerController();
+	if (!ensure(PlayerController != nullptr)) return;
 
 	FInputModeGameOnly InputModeData;
 	PlayerController->SetInputMode(InputModeData);
 
 	PlayerController->bShowMouseCursor = false;
-}
-
-void UMenuWidget::SetMenuInterface(IMenuInterface* MenuInterface) {
-	this->MenuInterface = MenuInterface;
 }
