@@ -1,9 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PuzzlePlatformGameInstance.h"
+
 #include "Engine/Engine.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
+#include "OnlineSubsystem.h"
+
+/*Local files.*/
 #include "PlatformTrigger.h"
 #include "MenuSystem/MainMenu.h"
 #include "MenuSystem/MenuWidget.h"
@@ -21,10 +25,15 @@ UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitialize
 }
 
 void UPuzzlePlatformGameInstance::Init() {
-	UE_LOG(LogTemp, Warning, TEXT("Found class %s"),*MenuClass->GetName());
+	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
+	if (!ensure(OnlineSubsystem != NULL)) return;
+	IOnlineSessionPtr SessionInterface = OnlineSubsystem->GetSessionInterface();
+	if(SessionInterface.IsValid()) {
+		UE_LOG(LogTemp, Warning, TEXT("Found session interface!!!!"));
+	}
 }
 
-void UPuzzlePlatformGameInstance::LoadMenu() {
+void UPuzzlePlatformGameInstance::LoadMenuWidget() {
 	if (!ensure(MenuClass != NULL)) return;
 	UMainMenu* Menu = CreateWidget<UMainMenu>(this, MenuClass);
 	if (!ensure(Menu != NULL)) return;
