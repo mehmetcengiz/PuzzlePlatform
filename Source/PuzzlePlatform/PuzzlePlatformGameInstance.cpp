@@ -30,7 +30,6 @@ void UPuzzlePlatformGameInstance::Init() {
 	if (!ensure(OnlineSubsystem != NULL)) return;
 	SessionInterface = OnlineSubsystem->GetSessionInterface();
 	if (SessionInterface.IsValid()) {
-
 		SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(
 			this, &UPuzzlePlatformGameInstance::OnCreateSessionComplete);
 	}
@@ -70,7 +69,7 @@ void UPuzzlePlatformGameInstance::Join(const FString& Address) {
 	APlayerController* PlayerController = GetFirstLocalPlayerController();
 	if (!ensure(PlayerController!= nullptr)) return;
 
-	PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+	PlayerController->ClientTravel(Address, TRAVEL_Absolute);
 
 }
 
@@ -78,12 +77,12 @@ void UPuzzlePlatformGameInstance::LoadMainMenu() {
 	APlayerController* PlayerController = GetFirstLocalPlayerController();
 	if (!ensure(PlayerController != nullptr)) return;
 
-	PlayerController->ClientTravel("/Game/MenuSystem/MainMenu", ETravelType::TRAVEL_Absolute);
+	PlayerController->ClientTravel("/Game/MenuSystem/MainMenu", TRAVEL_Absolute);
 }
 
 void UPuzzlePlatformGameInstance::OnCreateSessionComplete(FName SessionName, bool Success) {
 
-	if(!Success) {
+	if (!Success) {
 		UE_LOG(LogTemp,Warning,TEXT("Could not create session!"))
 		return;
 	}
