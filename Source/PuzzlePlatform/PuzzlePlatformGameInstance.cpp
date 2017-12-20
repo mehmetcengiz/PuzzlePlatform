@@ -5,7 +5,8 @@
 #include "Engine/Engine.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
-#include "OnlineSubsystem.h"
+#include "OnlineSessionSettings.h"
+#include "OnlineSessionInterface.h"
 
 /*Local files.*/
 #include "PlatformTrigger.h"
@@ -14,22 +15,24 @@
 #include "MenuSystem/InGameMenu.h"
 
 
-UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitializer & ObjectInitializer) {
+UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitializer& ObjectInitializer) {
 	static ConstructorHelpers::FClassFinder<UMainMenu> MenuBPClass(TEXT("/Game/MenuSystem/WBP_MainMenu"));
-	if (!ensure(MenuBPClass.Class != NULL)) { return;}	
+	if (!ensure(MenuBPClass.Class != NULL)) { return; }
 	MenuClass = MenuBPClass.Class;
 
 	static ConstructorHelpers::FClassFinder<UInGameMenu> InGameMenuBPClass(TEXT("/Game/MenuSystem/WBP_InGameMenu"));
 	if (!ensure(InGameMenuBPClass.Class != NULL)) { return; }
-	InGameMenuClass	 = InGameMenuBPClass.Class;
+	InGameMenuClass = InGameMenuBPClass.Class;
 }
 
 void UPuzzlePlatformGameInstance::Init() {
 	IOnlineSubsystem* OnlineSubsystem = IOnlineSubsystem::Get();
 	if (!ensure(OnlineSubsystem != NULL)) return;
-	IOnlineSessionPtr SessionInterface = OnlineSubsystem->GetSessionInterface();
-	if(SessionInterface.IsValid()) {
-		UE_LOG(LogTemp, Warning, TEXT("Found session interface!!!!"));
+	SessionInterface = OnlineSubsystem->GetSessionInterface();
+	if (SessionInterface.IsValid()) {
+
+		SessionInterface->OnCreateSessionCompleteDelegates.AddUObject(
+			this, &UPuzzlePlatformGameInstance::OnCreateSessionComplete);
 	}
 }
 
@@ -55,16 +58,14 @@ void UPuzzlePlatformGameInstance::InGameLoadMenu() {
 }
 
 void UPuzzlePlatformGameInstance::Host() {
-	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Green, TEXT("Hosting"));
-
-	UWorld* World = GetWorld();
-	if (!ensure(World != nullptr)) return;
-
-	World->ServerTravel("/Game/Maps/ThirdPersonExampleMap?listen");
+	if (SessionInterface.IsValid()) {
+		FOnlineSessionSettings SessionSetting;
+		SessionInterface->CreateSession(0, TEXT("My Session Game"), SessionSetting);
+	}
 }
 
 void UPuzzlePlatformGameInstance::Join(const FString& Address) {
-	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Green, FString::Printf(TEXT("Joining %s"),*Address));
+	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Green, FString::Printf(TEXT("Joining %s"), *Address));
 
 	APlayerController* PlayerController = GetFirstLocalPlayerController();
 	if (!ensure(PlayerController!= nullptr)) return;
@@ -78,4 +79,20 @@ void UPuzzlePlatformGameInstance::LoadMainMenu() {
 	if (!ensure(PlayerController != nullptr)) return;
 
 	PlayerController->ClientTravel("/Game/MenuSystem/MainMenu", ETravelType::TRAVEL_Absolute);
+}
+
+void UPuzzlePlatformGameInstance::OnCreateSessionComplete(FName SessionName, bool Success) {
+
+	if(!Success) {
+		UE_LOG(LogTemp,Warning,TEXT("Could not create session!"))
+		return;
+	}
+
+	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Green, TEXT("Hosting"));
+
+	UWorld* World = GetWorld();
+	if (!ensure(World != nullptr)) return;
+
+	World->ServerTravel("/Game/Maps/ThirdPersonExampleMap?listen");
+
 }
