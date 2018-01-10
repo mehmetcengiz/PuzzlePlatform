@@ -1,11 +1,21 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MainMenu.h"
+
+#include "UObject/ConstructorHelpers.h"
+
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
 #include "Components/EditableTextBox.h"
 
+#include "ServerRow.h"
 
+UMainMenu::UMainMenu(const FObjectInitializer & ObjectInitializer) {
+	ConstructorHelpers::FClassFinder<UUserWidget> ServerRowBPClass(TEXT("/Game/MenuSystem/WBP_ServerRow"));
+	if (!ensure(ServerRowBPClass.Class != nullptr)) return;
+	
+	ServerRowClass = ServerRowBPClass.Class;
+}
 
 bool UMainMenu::Initialize() {
 	bool Success = Super::Initialize();
@@ -15,7 +25,6 @@ bool UMainMenu::Initialize() {
 	if (!ensure(BtnJoin != NULL)) return false;
 	if (!ensure(BtnJoinMenu != NULL)) return false;
 	if (!ensure(BtnCancelJoinMenu != NULL)) return false;
-	if (!ensure(IpAddressField != NULL)) return false;
 	if (!ensure(BtnExitGame != NULL)) return false;
 
 	BtnHost->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
@@ -43,9 +52,17 @@ void UMainMenu::HostServer() {
 void UMainMenu::JoinServer() {
 	UE_LOG(LogTemp, Warning, TEXT("I will Join to Server"));
 	if(MenuInterface != NULL) {
-		if (!ensure(IpAddressField != NULL)) return;
-		FString Address = IpAddressField->GetText().ToString();
-		MenuInterface->Join(Address);
+		//if (!ensure(IpAddressField != NULL)) return;
+		//FString Address = IpAddressField->GetText().ToString();
+		//MenuInterface->Join(Address);
+
+		UWorld* World = this->GetWorld();
+		if (!ensure(World != nullptr)) return;
+		
+		UServerRow * Row = CreateWidget<UServerRow>(World, ServerRowClass);
+		if (!ensure(Row != nullptr)) return;
+		
+		ServerList->AddChild(Row);
 	}
 }
 

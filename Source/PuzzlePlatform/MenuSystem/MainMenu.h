@@ -7,61 +7,65 @@
 #include "MainMenu.generated.h"
 
 /**
- * 
- */
+*
+*/
 UCLASS()
 class PUZZLEPLATFORM_API UMainMenu : public UMenuWidget
 {
 	GENERATED_BODY()
-
+public:
+	UMainMenu(const FObjectInitializer & ObjectInitializer);
 protected:
 	virtual bool Initialize() override;
 	void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
 
 private:
-	UPROPERTY(meta = (BindWidget))
-	class UButton* BtnHost;
-	
-	UPROPERTY(meta = (BindWidget))
-	class UButton* BtnJoin;	
-	
-	UPROPERTY(meta = (BindWidget))
-	class UButton* BtnJoinMenu;		
-	
-	UPROPERTY(meta = (BindWidget))
-	class UButton* BtnExitGame;
+
+	TSubclassOf<class UUserWidget> ServerRowClass;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* BtnCancelJoinMenu;
+		class UButton* BtnHost;
 
 	UPROPERTY(meta = (BindWidget))
-	class UWidgetSwitcher* MenuSwitcher;
-	
-	UPROPERTY(meta = (BindWidget))
-	class UWidget* JoinMenu;
-	
-	UPROPERTY(meta = (BindWidget))
-	class UWidget* MainMenu;
+		class UButton* BtnJoin;
 
 	UPROPERTY(meta = (BindWidget))
-	class UEditableTextBox* IpAddressField;
+		class UButton* BtnJoinMenu;
+
+	UPROPERTY(meta = (BindWidget))
+		class UButton* BtnExitGame;
+
+	UPROPERTY(meta = (BindWidget))
+		class UButton* BtnCancelJoinMenu;
+
+	UPROPERTY(meta = (BindWidget))
+		class UWidgetSwitcher* MenuSwitcher;
+
+	UPROPERTY(meta = (BindWidget))
+		class UWidget* JoinMenu;
+
+	UPROPERTY(meta = (BindWidget))
+		class UWidget* MainMenu;
+
+	UPROPERTY(meta = (BindWidget))
+		class UPanelWidget* ServerList;
 
 
 
 	UFUNCTION()
-	void HostServer();
+		void HostServer();
 
 	UFUNCTION()
-	void JoinServer();
+		void JoinServer();
 
 	UFUNCTION()
-	void OpenJoinMenu();
+		void OpenJoinMenu();
 
 	UFUNCTION()
-	void OpenMainMenu();
+		void OpenMainMenu();
 
 	UFUNCTION()
-	void ExitPressed();
+		void ExitPressed();
 
 
 };
