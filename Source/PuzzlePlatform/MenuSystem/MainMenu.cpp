@@ -76,18 +76,16 @@ void UMainMenu::SelectIndex(uint32 Index){
 
 void UMainMenu::JoinServer() {
 	
-	if (SelectedIndex.IsSet()) {
+	if (SelectedIndex.IsSet() & MenuInterface != NULL) {
 		UE_LOG(LogTemp, Warning, TEXT("Selected Index: %d"), SelectedIndex.GetValue());
+		MenuInterface->Join(SelectedIndex.GetValue());
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("You havent selected a index !!! "));
 	}
-	
-	if(MenuInterface != NULL) {
 		//if (!ensure(IpAddressField != NULL)) return;
 		//FString Address = IpAddressField->GetText().ToString();
-		MenuInterface->Join("");
-	}
+	
 }
 
 void UMainMenu::OpenJoinMenu() {

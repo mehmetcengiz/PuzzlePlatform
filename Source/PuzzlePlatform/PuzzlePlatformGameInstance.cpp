@@ -6,7 +6,6 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Blueprint/UserWidget.h"
 #include "OnlineSessionSettings.h"
-#include "OnlineSessionInterface.h"
 
 /*Local files.*/
 #include "PlatformTrigger.h"
@@ -37,6 +36,7 @@ void UPuzzlePlatformGameInstance::Init() {
 			this, &UPuzzlePlatformGameInstance::OnDestroySessionComplete);
 		SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(
 			this, &UPuzzlePlatformGameInstance::OnFindSessionsComplete);
+		SessionInterface->OnJoinSessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnJoinSessionComplete);
 	}
 }
 
@@ -134,19 +134,31 @@ void UPuzzlePlatformGameInstance::OnFindSessionsComplete(bool Success) {
 	}
 }
 
-void UPuzzlePlatformGameInstance::Join(const FString& Address) {
 
-	if (Menu != NULL) {
-		Menu->SetServerList({ "Test1", "Test2", "Test3"});
+void UPuzzlePlatformGameInstance::Join(uint32 Index) {
+
+	if (!SessionInterface.IsValid()) {return;}
+	if (!SessionSearch.IsValid()) { return; }
+
+	SessionInterface->JoinSession(0, SESSION_NAME, SessionSearch->SearchResults[Index]);
+}
+
+void UPuzzlePlatformGameInstance::OnJoinSessionComplete(FName SessionName, EOnJoinSessionCompleteResult::Type Result)
+{
+	if (!SessionInterface.IsValid()) { return;}
+
+	FString Address;
+	if (!SessionInterface->GetResolvedConnectString(SessionName, OUT Address)) {
+		UE_LOG(LogTemp, Error, TEXT("Could not get connect string!"));
+		return;
 	}
 
+	GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Green, FString::Printf(TEXT("Joining %s"), *Address));
 
-	//GEngine->AddOnScreenDebugMessage(-1, 15.f, FColor::Green, FString::Printf(TEXT("Joining %s"), *Address));
+	APlayerController* PlayerController = GetFirstLocalPlayerController();
+	if (!ensure(PlayerController!= nullptr)) return;
 
-	//APlayerController* PlayerController = GetFirstLocalPlayerController();
-	//if (!ensure(PlayerController!= nullptr)) return;
-
-	//PlayerController->ClientTravel(Address, TRAVEL_Absolute);
+	PlayerController->ClientTravel(Address, TRAVEL_Absolute);
 
 }
 
