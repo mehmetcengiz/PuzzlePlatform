@@ -137,7 +137,7 @@ void UPuzzlePlatformGameInstance::OnFindSessionsComplete(bool Success) {
 void UPuzzlePlatformGameInstance::Join(const FString& Address) {
 
 	if (Menu != NULL) {
-		//Menu->SetServerList({ "Test1", "Test2", "Test3"});
+		Menu->SetServerList({ "Test1", "Test2", "Test3"});
 	}
 
 

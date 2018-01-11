@@ -17,6 +17,8 @@ public:
 	UMainMenu(const FObjectInitializer & ObjectInitializer);
 
 	void SetServerList(TArray<FString> ServerNames);
+
+	void SelectIndex(uint32 Index);
 protected:
 	virtual bool Initialize() override;
 	void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
@@ -69,5 +71,5 @@ private:
 	UFUNCTION()
 		void ExitPressed();
 
-
+	TOptional<uint32> SelectedIndex;
 };
