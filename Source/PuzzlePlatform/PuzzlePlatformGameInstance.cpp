@@ -128,6 +128,10 @@ void UPuzzlePlatformGameInstance::OnFindSessionsComplete(bool Success) {
 	if (Success && SessionSearch.IsValid() && Menu != NULL) {
 
 		TArray<FString> ServerNames;
+		/*TODO Added for debugging. Delete */
+		ServerNames.Add("Test Server 1");
+		ServerNames.Add("Test Server 2");
+		ServerNames.Add("Test Server 3");
 
 		for (const FOnlineSessionSearchResult& search_result : SessionSearch->SearchResults) {
 			UE_LOG(LogTemp, Warning, TEXT("Found Session Names: %s"), *search_result.GetSessionIdStr());

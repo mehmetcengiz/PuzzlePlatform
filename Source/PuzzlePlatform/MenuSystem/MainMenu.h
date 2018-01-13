@@ -72,4 +72,6 @@ private:
 		void ExitPressed();
 
 	TOptional<uint32> SelectedIndex;
+
+	void UpdateChildren();
 };
