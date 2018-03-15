@@ -23,12 +23,16 @@ bool UMainMenu::Initialize() {
 	if (!Success) return false;
 
 	if (!ensure(BtnHost != NULL)) return false;
+	if (!ensure(BtnCancelHostMenu != NULL)) return false;
+	if (!ensure(BtnConfirmHostMenu != NULL)) return false;
 	if (!ensure(BtnJoin != NULL)) return false;
 	if (!ensure(BtnJoinMenu != NULL)) return false;
 	if (!ensure(BtnCancelJoinMenu != NULL)) return false;
 	if (!ensure(BtnExitGame != NULL)) return false;
 
-	BtnHost->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
+	BtnHost->OnClicked.AddDynamic(this, &UMainMenu::OpenHostMenu);
+	BtnConfirmHostMenu->OnClicked.AddDynamic(this, &UMainMenu::HostServer);
+	BtnCancelHostMenu->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
 	BtnJoin->OnClicked.AddDynamic(this, &UMainMenu::JoinServer);
 	BtnJoinMenu->OnClicked.AddDynamic(this, &UMainMenu::OpenJoinMenu);
 	BtnCancelJoinMenu->OnClicked.AddDynamic(this, &UMainMenu::OpenMainMenu);
@@ -46,10 +50,14 @@ void UMainMenu::OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) {
 void UMainMenu::HostServer() {
 	UE_LOG(LogTemp, Warning, TEXT("I will HOST a Server!!"));
 	if(MenuInterface != NULL) {
-		MenuInterface->Host();
+		FString ServerName = ServerHostName->Text.ToString();
+		MenuInterface->Host(ServerName);
 	}
 }
 
+void UMainMenu::OpenHostMenu() {
+	MenuSwitcher->SetActiveWidget(HostMenu);
+}
 void UMainMenu::SetServerList(TArray<FServerData> ServerDatas) {
 
 	UWorld* World = this->GetWorld();
@@ -115,6 +123,7 @@ void UMainMenu::OpenMainMenu() {
 	if (!ensure(MainMenu != NULL)) return;
 	MenuSwitcher->SetActiveWidget(MainMenu);
 }
+
 
 void UMainMenu::ExitPressed() {
 	UWorld* World = GetWorld();

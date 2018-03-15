@@ -37,48 +37,63 @@ private:
 	TSubclassOf<class UUserWidget> ServerRowClass;
 
 	UPROPERTY(meta = (BindWidget))
-		class UButton* BtnHost;
+	class UButton* BtnHost;
 
 	UPROPERTY(meta = (BindWidget))
-		class UButton* BtnJoin;
+	class UButton* BtnJoin;
 
 	UPROPERTY(meta = (BindWidget))
-		class UButton* BtnJoinMenu;
+	class UButton* BtnJoinMenu;
 
 	UPROPERTY(meta = (BindWidget))
-		class UButton* BtnExitGame;
+	class UButton* BtnExitGame;
 
 	UPROPERTY(meta = (BindWidget))
-		class UButton* BtnCancelJoinMenu;
+	class UButton* BtnCancelJoinMenu;
 
 	UPROPERTY(meta = (BindWidget))
-		class UWidgetSwitcher* MenuSwitcher;
+	class UWidgetSwitcher* MenuSwitcher;
 
 	UPROPERTY(meta = (BindWidget))
-		class UWidget* JoinMenu;
+	class UWidget* JoinMenu;
 
 	UPROPERTY(meta = (BindWidget))
-		class UWidget* MainMenu;
+	class UWidget* MainMenu;
 
 	UPROPERTY(meta = (BindWidget))
-		class UPanelWidget* ServerList;
+	class UWidget* HostMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	class UEditableTextBox* ServerHostName;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* BtnCancelHostMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* BtnConfirmHostMenu;
+
+	UPROPERTY(meta = (BindWidget))
+	class UPanelWidget* ServerList;
 
 
 
 	UFUNCTION()
-		void HostServer();
+	void HostServer();
 
 	UFUNCTION()
-		void JoinServer();
+	void JoinServer();
 
 	UFUNCTION()
-		void OpenJoinMenu();
+	void OpenJoinMenu();
 
 	UFUNCTION()
-		void OpenMainMenu();
+	void OpenMainMenu();
+	
+	UFUNCTION()
+	void OpenHostMenu();
 
 	UFUNCTION()
-		void ExitPressed();
+	void ExitPressed();
 
 	TOptional<uint32> SelectedIndex;
 
