@@ -13,7 +13,7 @@
 #include "MenuSystem/MenuWidget.h"
 #include "MenuSystem/InGameMenu.h"
 
-const static FName SESSION_NAME = TEXT("My Session Name");
+const static FName SESSION_NAME = TEXT("Game");
 const static FName SERVER_NAME_SETTINGS_KEY = TEXT("ServerName");
 
 UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitializer& ObjectInitializer) {
