@@ -32,6 +32,10 @@ protected:
 	virtual bool Initialize() override;
 	void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
 
+
+	UPROPERTY(meta = (BindWidget), BlueprintReadWrite)
+	class UEditableTextBox* ServerHostName;
+
 private:
 
 	TSubclassOf<class UUserWidget> ServerRowClass;
@@ -63,8 +67,6 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UWidget* HostMenu;
 
-	UPROPERTY(meta = (BindWidget))
-	class UEditableTextBox* ServerHostName;
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* BtnCancelHostMenu;
