@@ -49,6 +49,7 @@ void UMainMenu::OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) {
 
 void UMainMenu::HostServer() {
 	UE_LOG(LogTemp, Warning, TEXT("I will HOST a Server!!"));
+
 	if(MenuInterface != NULL) {
 		FString ServerName = ServerHostName->Text.ToString();
 		MenuInterface->Host(ServerName);
